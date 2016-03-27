@@ -1,0 +1,7 @@
+[rss]
+feeds = http://example.com/feed1.xml,
+        http://example.com/feed2.xml
+
+[mail]
+sender = noreply@example.com
+recipients = recipient1@example.com, recipient2@example.com

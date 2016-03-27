@@ -1,0 +1,4 @@
+*.pyc
+!lib/README.md
+.DS_Store
+main.config
