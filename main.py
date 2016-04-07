@@ -16,8 +16,11 @@ MAIL_TEMPLATE = """
 """
 
 app = Flask(__name__)
+
 config = ConfigParser.RawConfigParser()
 config.read("main.config")
+
+feedparser._HTMLSanitizer.acceptable_elements.update(['object', 'param', 'embed'])
 
 @app.route('/')
 def start_page():
@@ -40,11 +43,11 @@ def poll_blog(url):
     # Download and parse blog RSS/Atom
     d = feedparser.parse(url)
 
-    # Create an ancestor key based on the blog's unique id
-    ancestor_key = ndb.Key("blog_id", d.feed.id)
+    # Create an ancestor key based on the blog's url
+    ancestor_key = ndb.Key("blog_id", d.feed.link)
 
-    # Loop over all posts
-    for entry in d['entries']:
+    # Loop over all posts, starting with the oldest
+    for entry in d['entries'][::-1]:
 
         # Figure out if the post is new, or has been seen before
         if BlogPost.is_post_new(ancestor_key, entry.id):
