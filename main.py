@@ -43,7 +43,7 @@ def poll_blog(url):
     # Create an ancestor key based on the blog's unique id
     ancestor_key = ndb.Key("blog_id", d.feed.id)
 
-    # Loop over all posts 
+    # Loop over all posts
     for entry in d['entries']:
 
         # Figure out if the post is new, or has been seen before
