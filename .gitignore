@@ -2,3 +2,5 @@
 !lib/README.md
 .DS_Store
 main.config
+source-context.json
+source-contexts.json
