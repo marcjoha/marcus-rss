@@ -56,12 +56,31 @@ def poll_blog(url):
             new_post = BlogPost(id = entry.id, parent = ancestor_key)
             new_post.put()
 
+            # Try to create a date/time string
+            try:
+                formatted_timestamp = time.strftime("%A %B %-d, %H:%M %Z", entry.published_parsed)
+            except AttributeError:
+                try:
+                    formatted_timestamp = time.strftime("%A %B %-d, %H:%M %Z", entry.updated_parsed)
+                except AttributeError:
+                    formatted_timestamp = "UNKNOWN"
+
+            # Try and find the posts content
+            try:
+                content = entry.content[0].value
+            except AttributeError:
+                try:
+                    content = entry.summary_detail.value
+                except AttributeError:
+                    # give up, we couldn't fine the post's content so might as well skip this one
+                    continue
+
             # Send email containing the new post
             message = mail.EmailMessage()
             message.sender = d.feed.title + " <%s>" % (config.get("mail", "sender"))
             message.to = [email.strip() for email in config.get("mail", "recipients").split(",")]
             message.subject = entry.title
-            message.html = MAIL_TEMPLATE % (entry.link, time.strftime("%A %B %-d, %H:%M %Z", entry.published_parsed), entry.title, entry.content[0].value)
+            message.html = MAIL_TEMPLATE % (entry.link, formatted_timestamp, entry.title, content)
             message.check_initialized()
             message.send()
 
