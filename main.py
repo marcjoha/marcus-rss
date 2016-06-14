@@ -5,6 +5,7 @@ import feedparser
 import time
 import ConfigParser
 
+DATE_FORMAT = "%a, %d %b %Y %H:%M:%S UTC"
 MAIL_TEMPLATE = """
 <html>
     <body>
@@ -58,10 +59,10 @@ def poll_blog(url):
 
             # Try to create a date/time string
             try:
-                formatted_timestamp = time.strftime("%A %B %-d, %H:%M %Z", entry.published_parsed)
+                formatted_timestamp = time.strftime(DATE_FORMAT, entry.published_parsed)
             except AttributeError:
                 try:
-                    formatted_timestamp = time.strftime("%A %B %-d, %H:%M %Z", entry.updated_parsed)
+                    formatted_timestamp = time.strftime(DATE_FORMAT, entry.updated_parsed)
                 except AttributeError:
                     formatted_timestamp = "UNKNOWN"
 
