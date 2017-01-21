@@ -69,6 +69,11 @@ def poll_blog(url):
             # Try and find the posts content
             try:
                 content = entry.content[0].value
+
+                # also raise exception if field is just empty
+                if not content:
+                    raise AttributeError
+
             except AttributeError:
                 try:
                     content = entry.summary_detail.value
