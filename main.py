@@ -21,7 +21,7 @@ app = Flask(__name__)
 config = ConfigParser.RawConfigParser()
 config.read("main.config")
 
-feedparser._HTMLSanitizer.acceptable_elements.update(['object', 'param', 'embed'])
+feedparser.SANITIZE_HTML = False
 
 @app.route('/')
 def start_page():
