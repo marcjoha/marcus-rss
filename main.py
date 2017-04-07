@@ -45,7 +45,10 @@ def poll_blog(url):
     d = feedparser.parse(url)
 
     # Create an ancestor key based on the blog's url
-    ancestor_key = ndb.Key("blog_id", d.feed.link)
+    try:
+        ancestor_key = ndb.Key("blog_id", d.feed.link)
+    except AttributeError:
+        return
 
     # Loop over all posts, starting with the oldest
     for entry in d['entries'][::-1]:
