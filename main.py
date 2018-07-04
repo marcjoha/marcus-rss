@@ -48,16 +48,14 @@ class BlogPost(ndb.Model):
         return self.get_by_id(post_id, parent=ancestor_key) == None
 
 def poll_blog(url, feedgroup_name):
+    # Count number of e-mails sent
     num_sent = 0
 
     # Download and parse blog RSS/Atom
     d = feedparser.parse(url)
 
     # Create an ancestor key based on the blog's url
-    try:
-        ancestor_key = ndb.Key("blog_id", d.feed.link)
-    except AttributeError:
-        return
+    ancestor_key = ndb.Key("blog_id", url)
 
     # Loop over all posts, starting with the oldest
     for entry in d['entries'][::-1]:
