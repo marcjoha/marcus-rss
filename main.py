@@ -94,7 +94,7 @@ def poll_blog(url, feedgroup_name):
             # Send email containing the new post
             message = mail.EmailMessage()
             message.sender = d.feed.title + " <%s>" % (sender_address(feedgroup_name))
-            message.to = [email.strip() for email in config.get("mail", "recipients").split(",")]
+            message.to = email_recipients(feedgroup_name)
             message.subject = entry.title
             message.html = MAIL_TEMPLATE % (entry.link, formatted_timestamp, entry.title, content)
             message.check_initialized()
@@ -103,6 +103,12 @@ def poll_blog(url, feedgroup_name):
             num_sent += 1
 
     return num_sent
+
+def email_recipients(feedgroup_name):
+    global_recipients = config.get("mail", "recipients").split(",")
+    if config.has_option(feedgroup_name, "recipients"):
+        global_recipients += config.get(feedgroup_name, "recipients").split(",")
+    return [email.strip() for email in global_recipients]
 
 def sender_address(feedgroup_name):
     if config.has_option("mail", "sender"):

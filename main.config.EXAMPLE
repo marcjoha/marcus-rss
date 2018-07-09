@@ -5,6 +5,9 @@ feeds = http://example.com/feed1.xml,
 [group2]
 feeds = http://other.com/feed1.xml,
         http://other.com/feed2.xml
+# In addition to the global config below, also include the following 
+# recipients for this feed.
+recipients = recipient3@example.com
 
 [mail]
 # Configure one of the following sender options depending on the behavior
