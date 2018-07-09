@@ -1,7 +1,24 @@
-[rss]
+[group1]
 feeds = http://example.com/feed1.xml,
         http://example.com/feed2.xml
 
+[group2]
+feeds = http://other.com/feed1.xml,
+        http://other.com/feed2.xml
+# In addition to the global config below, also include the following 
+# recipients for this feed.
+recipients = recipient3@example.com
+
 [mail]
-sender = noreply@example.com
+# Configure one of the following sender options depending on the behavior
+# you want.
+
+# Use same sender address for all feed groups
+# sender = noreply@my-rss-project.appspotmail.com
+
+# Send updates for each feed group from
+# rss+groupname@my-rss-project.appspotmail.com, allowing for
+# filtering of feed e-mails by group.
+# sender_domain = my-rss-project.appspotmail.com
+
 recipients = recipient1@example.com, recipient2@example.com
