@@ -64,7 +64,23 @@ def poll_blog(url, feedgroup_name):
         try:
             entry_id = entry.id
         except AttributeError:
-            continue
+            # If not set, use post link
+            try:
+                entry_id = entry.link
+            except AttributeError:
+                # If N/A, skip to next post
+                continue
+
+        # Get the entry's title, if there is one
+        try:
+            entry_title = entry.title
+        except AttributeError:
+            # if not set, use post link
+            try:
+                entry_title = entry.link
+            except AttributeError:
+                # If N/A, skip to next post
+                continue
 
         # Figure out if the post is new, or has been seen before
         if BlogPost.is_post_new(ancestor_key, entry_id):
@@ -93,8 +109,8 @@ def poll_blog(url, feedgroup_name):
             message = mail.EmailMessage()
             message.sender = d.feed.title + " <%s>" % (sender_address(feedgroup_name))
             message.to = email_recipients(feedgroup_name)
-            message.subject = entry.title
-            message.html = MAIL_TEMPLATE % (entry.link, formatted_timestamp, entry.title, content)
+            message.subject = entry_title
+            message.html = MAIL_TEMPLATE % (entry.link, formatted_timestamp, entry_title, content)
             message.check_initialized()
             message.send()
 
