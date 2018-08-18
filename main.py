@@ -60,11 +60,17 @@ def poll_blog(url, feedgroup_name):
     # Loop over all posts, starting with the oldest
     for entry in d['entries'][::-1]:
 
+        # Get the entry's id, if there is one.
+        try:
+            entry_id = entry.id
+        except AttributeError:
+            continue
+
         # Figure out if the post is new, or has been seen before
-        if BlogPost.is_post_new(ancestor_key, entry.id):
+        if BlogPost.is_post_new(ancestor_key, entry_id):
 
             # Store post's unique id for future reference
-            new_post = BlogPost(id = entry.id, parent = ancestor_key)
+            new_post = BlogPost(id = entry_id, parent = ancestor_key)
             new_post.put()
 
             # Try to create a date/time string
