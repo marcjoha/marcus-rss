@@ -78,18 +78,10 @@ def poll_blog(url, feedgroup_name):
 
             # Try and find the posts content
             try:
-                content = entry.content[0].value
-
-                # also raise exception if field is just empty
-                if not content:
-                    raise AttributeError
-
+                content = entry.summary
             except AttributeError:
-                try:
-                    content = entry.summary_detail.value
-                except AttributeError:
-                    # give up, we couldn't fine the post's content so might as well skip this one
-                    continue
+                # give up, we couldn't fine the post's content so might as well skip this one
+                continue
 
             # Send email containing the new post
             message = mail.EmailMessage()
