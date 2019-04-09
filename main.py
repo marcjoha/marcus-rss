@@ -102,7 +102,7 @@ def poll_blog(url, feedgroup_name):
             try:
                 content = entry.summary
             except AttributeError:
-                # give up, we couldn't fine the post's content so might as well skip this one
+                # give up, we couldn't find the post's content so might as well skip this one
                 continue
 
             # Send email containing the new post
